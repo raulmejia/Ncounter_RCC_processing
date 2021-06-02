@@ -1,15 +1,12 @@
 #########
-## Nacho_default_Normalization.R
+## Nacho_renorm.R
 #########
 ### This script receive a folder with RCC files and retreives:
 ###     A) Expression matrix of the InputCounts (as expressed in the NACHO object)
-###     B) Expression matrix with the default normalization given by NACHO
-###     C) Nacho Object
+###     B) Expression matrix from a renormalization through NACHO using the specified parameters
+###     C) The Nacho Object
 ###
-###     Document that describes Nacho normalization
-###
-### Your annotation file should contain a col with the name equal to the content of this parameter myIDcolname
-### for example "Unique_ID" if the content is myIDcolname <- "Unique_ID"
+###     Document that describes Nacho normalization / if could be the Nanostring document that explain the HK and Positive Control normalization
 #########
 ##################
 ### loading required packages
@@ -92,6 +89,10 @@ parser$add_argument("-s", "--ssheet", type="character",
                     help="path to your ssheet")
 parser$add_argument("-i", "--idcolname", type="character", 
                     help="colanme used as id")
+parser$add_argument("-k", "--housekeepingfile", type="character", 
+                    help="File that countains your House Keeping genes")
+parser$add_argument("-r", "--removeoutliers", type="character", 
+                    help="logical indication wheter remove or no the outliers")
 parser$add_argument("-a", "--annotation", type="character", 
                     help="Annotation File")
 parser$add_argument("-n", "--normalizationmethod", type="character", 
@@ -123,8 +124,14 @@ ssheet_path <- args$ssheet
 myIDcolname <- args$idcolname
 # myIDcolname <- "Unique_ID"
 
+myHKgenes_path <- args$housekeepingfile
+# myHKgenes_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/HKlists/OAZ1_PGK1_SDHA_MRPS7.tsv" 
+
+removeoutliers <- args$removeoutliers
+# removeoutliers <- "TRUE"
+
 annotation_path <- args$annotation
-# annotation_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.tsv"
+# annotation_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.csv"
 
 mynormalizationmethod <- args$normalizationmethod
 # mynormalizationmethod <- "GEO" # it could be GLM as well
@@ -137,10 +144,10 @@ your_main_groups  <- args$maingroups
 # your_main_groups  <- "Tissue"
 
 label <- args$label
-# label <- "Log2_NACHO_4HK_GLM"
+# label <- "Log2_NACHO_4HK_GEO"
 
 outputfolder <- args$outputfolder
-# outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm"
+# outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm_4HK_GEO"
 dir.create(outputfolder, recursive = TRUE) ; outputfolder <- normalizePath( outputfolder )
 
 #####################################
@@ -156,6 +163,16 @@ source( paste0( code_path,"/libraries/","Nacho2Matrix.R" ) )
 input_RCCs <- load_rcc(data_directory = data_directory_path ,
                        ssheet_csv = ssheet_path ,
                        id_colname = myIDcolname  )
+
+myHKgenes <- read.table( file = myHKgenes_path , sep="\t", header=FALSE)
+Vector_myHKgenes <- myHKgenes$V1
+
+input_RCCs_normalized <- normalise(nacho_object= input_RCCs,
+                                   housekeeping_norm = TRUE,
+                                   normalisation_method = mynormalizationmethod ,
+                                   housekeeping_genes = Vector_myHKgenes ,
+                                   remove_outliers = TRUE)
+
 annot <- read.table( file = annotation_path , sep="\t", header=TRUE)
 
 #####
@@ -166,24 +183,13 @@ input_RCCs_Original_Counts_Mat <- Nacho_Orig_count_2matrix( input_RCCs)
 path2save_orig <- paste0( outputfolder , "/","ExpMat_as_input_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
 write.table( input_RCCs_Original_Counts_Mat, file=path2save_orig,  sep="\t", row.names = TRUE, col.names = TRUE)
 
-# Saving the Annot for related to The Norm matrix
-path2save_annot_from_origExpMat <- paste0( outputfolder , "/","Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
-
-rownames(annot) <- annot[, myIDcolname]
-order4annot <- colnames(input_RCCs_Original_Counts_Mat)  
-write.table(  annot[order4annot,] , file= path2save_annot_from_origExpMat ,  sep="\t", row.names = TRUE, col.names = TRUE, quote=FALSE)
-
 #####
 ## Extracting the normalized Counts from NACHO object using the default Normalization
 #####
-input_RCCs_DefaultNorm_Mat <- NachoNorm2matrix( input_RCCs )
+input_RCCs_ReNorm_Mat <- NachoNorm2matrix( input_RCCs )
 
-path2save_NormDefaultNacho <- paste0( outputfolder , "/","ExpMatNorm_NACHO_defaults_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
-write.table( input_RCCs_DefaultNorm_Mat , file=path2save_NormDefaultNacho ,  sep="\t", row.names = TRUE, col.names = TRUE)
+path2save_NormNacho <- paste0( outputfolder , "/","ExpMatNorm_NACHO_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--",label,".tsv")
+write.table( input_RCCs_ReNorm_Mat , file= path2save_NormNacho ,  sep="\t", row.names = TRUE, col.names = TRUE)
 
 path2save_NachoObj <- paste0( outputfolder , "/","NACHO_Obj_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.RDS")
 saveRDS( input_RCCs , file=path2save_NachoObj) 
-
-###
-# Saving the Annot for related to The Norm matrix
-###

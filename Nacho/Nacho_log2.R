@@ -103,7 +103,6 @@ if (!require("Rtsne")) {
 #####################
 myhousekeeping_Genes <- ""
 my_NACHO_normalisation_method <- "GLM"
-or "GEOM"
 myIDcolname <- "Unique_ID"
 code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
 code_path <- normalizePath(code_path)
@@ -138,8 +137,7 @@ annot <- read.table( file=annot_path , sep="\t", header=TRUE)
 #                                    remove_outliers = TRUE)
 # 
 # "MRPS7"
-? load_rcc
-? normalise
+
 input_RCCs_normalized <- normalise(nacho_object= input_RCCs,
                                    housekeeping_norm = TRUE,
                                    normalisation_method = my_NACHO_normalisation_method ,
@@ -205,14 +203,5 @@ annotOrginalcounts_plusquantiles_4_plotting_pca
 log2_No_Outlier <- input_RCCs_Original_Counts_Mat[,colnames_no_Outlier]
 rownames( annotOrginalcounts_plusquantiles_4_plotting_pca) <- annotOrginalcounts_plusquantiles_4_plotting_pca[, myIDcolname]
 annotOrginalcounts_plusquantiles_4_plotting_pca <- annotOrginalcounts_plusquantiles_4_plotting_pca[ colnames(ExpMat_input_RCCs_Original_Counts_plus_quantiles ),]
-
-
-
-
-dev.off()
-
-
-
-
 
 
