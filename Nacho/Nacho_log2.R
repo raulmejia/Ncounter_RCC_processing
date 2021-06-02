@@ -102,14 +102,15 @@ if (!require("Rtsne")) {
 ### Data given by the user
 #####################
 myhousekeeping_Genes <- ""
-my_normalisation_method <- ""
+my_NACHO_normalisation_method <- "GLM"
+or "GEOM"
 myIDcolname <- "Unique_ID"
 code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
 code_path <- normalizePath(code_path)
-annot_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot.csv"
-outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/NachoNorm"
+annot_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.csv"
+outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm"
 your_main_groups  <- "Tissue"
-label <- "NACHO_4HK_GLM"
+label <- "Log2_NACHO_4HK_GLM"
 
 #############
 ## Required functions
@@ -122,47 +123,37 @@ source( paste0( code_path,"/libraries/","Nacho2Matrix.R" ) )
 dir.create(outputfolder, recursive = TRUE)
 outputfolder <- normalizePath(outputfolder)
 
-# Manual
-vignette( "NACHO-analysis" )
+# Manual # vignette( "NACHO-analysis" )
 ####
-input_RCCs <- load_rcc(data_directory = "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_files/",
-                       ssheet_csv ="/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_csv.csv",
+input_RCCs <- load_rcc(data_directory = "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_log2/",
+                       ssheet_csv ="/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheetlog2_csv.csv",
                        id_colname = "Unique_ID" )
 
 annot <- read.table( file=annot_path , sep="\t", header=TRUE)
 
-visualise(input_RCCs )
-# Delete one HK STK11IP
-# Delete one kidney
-# visualise( Maja_Covid)
-#MyHKG <- setdiff( input_RCCs$housekeeping_genes, "STK11IP")
-#MyHKG2 <- setdiff( input_RCCs$housekeeping_genes, c("STK11IP","ALAS1","NRDE2") )
-#?normalise
-# Maja_Covid_normalized <- normalise(nacho_object=Maja_Covid,
-#                                    housekeeping_norm = TRUE,
-#                                    normalisation_method = "GEO",
-#                                    housekeeping_genes = MyHKG2,
-#                                    remove_outliers = TRUE)
-
-# Maja_Covid_normalized <- normalise(nacho_object=Maja_Covid,
+# input_RCCs_normalized <- normalise(nacho_object= input_RCCs,
 #                                    housekeeping_norm = TRUE,
 #                                    normalisation_method = "GLM",
-#                                    housekeeping_genes = MyHKG2,
+#                                    housekeeping_genes = c("NRDE2","MRPS7","GUSB","PGK1"),
 #                                    remove_outliers = TRUE)
-
+# 
+# "MRPS7"
+? load_rcc
+? normalise
 input_RCCs_normalized <- normalise(nacho_object= input_RCCs,
                                    housekeeping_norm = TRUE,
-                                   normalisation_method = "GLM",
-                                   housekeeping_genes = c("NRDE2","MRPS7","GUSB","PGK1"),
+                                   normalisation_method = my_NACHO_normalisation_method ,
+                                   housekeeping_genes = c("OAZ1","PGK1","SDHA","MRPS7"),
                                    remove_outliers = TRUE)
 
-#visualise( input_RCCs_normalized )
+# visualise( input_RCCs_normalized )
 input_RCCs_DefaultNorm_Mat <- NachoNorm2matrix( input_RCCs )
 input_RCCs_4HK_GLM_Norm_Mat <- NachoNorm2matrix( input_RCCs_normalized  )
 input_RCCs_Original_Counts_Mat <- Nacho_Orig_count_2matrix( input_RCCs)
 
+Matrix_norm <- input_RCCs_4HK_GLM_Norm_Mat
 
-# Exploring raw matrix 
+# Exploring log2 matrix 
 source( paste0( code_path,"/libraries/","matrix_N_annotdf_2_melteddf.R" ) )
 annot4NachoOrginalcounts <- annot[ which( annot[,myIDcolname] %in%  colnames( input_RCCs_Original_Counts_Mat )    ) , ]
 melted_Matrix_nacho_Orig <- matrix_N_annotdf_2_melteddf( input_RCCs_Original_Counts_Mat , annot4NachoOrginalcounts  ) 
@@ -170,11 +161,9 @@ melted_Matrix_nacho_Orig <- matrix_N_annotdf_2_melteddf( input_RCCs_Original_Cou
 source( paste0( code_path,"/libraries/","PCA_box_density_tsnes_plots.R" ) )
 annot4NachoOrginalcounts[ , your_main_groups ] <- as.factor( annot4NachoOrginalcounts[ , your_main_groups ] )
 PCA_box_density_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
-                             input_RCCs_Original_Counts_Mat , annot4NachoOrginalcounts , melted_Matrix_nacho_Orig , "NACHO_Orig_counts" , 3, your_main_groups  )
+                             input_RCCs_Original_Counts_Mat , annot4NachoOrginalcounts , melted_Matrix_nacho_Orig , "NACHO_Orig_counts_log2" , 3, your_main_groups  )
 
-
-Matrix_norm <- input_RCCs_DefaultNorm_Mat
-# Exploring the normalized matrix
+# Exploring the normalized matrix (Over log 2)
 source( paste0( code_path,"/libraries/","matrix_N_annotdf_2_melteddf.R" ) )
 annot4Nachonorm <- annot[ which( annot[,myIDcolname] %in%  colnames( Matrix_norm )    ) , ]
 melted_Matrix_nacho_norm <- matrix_N_annotdf_2_melteddf( Matrix_norm , annot4Nachonorm ) 
@@ -183,8 +172,7 @@ source( paste0( code_path,"/libraries/","PCA_box_density_tsnes_plots.R" ) )
 annot_4_plotting_pca <- annot4Nachonorm
 annot_4_plotting_pca[ , your_main_groups ] <- as.factor( annot_4_plotting_pca[ , your_main_groups ] )
 PCA_box_density_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
-                             Matrix_norm ,  annot_4_plotting_pca , melted_Matrix_nacho_norm , "NACHO_Default_normalization_over_Orig_Counts" , 3, your_main_groups  )
-
+                             Matrix_norm ,  annot_4_plotting_pca , melted_Matrix_nacho_norm , "NACHO_log2_then_HK4_GEO" , 3, your_main_groups  )
 
 rownames(annot4Nachonorm) <- annot4Nachonorm[,myIDcolname]
 annot4Nachonorm <- annot4Nachonorm[colnames(Matrix_norm), ]
@@ -192,49 +180,39 @@ colors_from_rainbow <- colors_4_plotDensities( annot4Nachonorm , your_main_group
 
 heatmap(Matrix_norm, ColSideColors = colors_from_rainbow )
 
+##### quantiles over raw
+ExpMat_input_RCCs_Original_Counts_plus_quantiles <- normalizeQuantiles(input_RCCs_Original_Counts_Mat )
+heatmap(ExpMat_input_RCCs_Original_Counts_plus_quantiles)
+
+annot4NachoOrginalcounts_plusquantiles <- annot[ which( annot[,myIDcolname] %in%  colnames( ExpMat_input_RCCs_Original_Counts_plus_quantiles )    ) , ]
+melted_Matrix_nacho_Orig_plusquantiles <- matrix_N_annotdf_2_melteddf( ExpMat_input_RCCs_Original_Counts_plus_quantiles , annot4NachoOrginalcounts_plusquantiles  ) 
+
+annotOrginalcounts_plusquantiles_4_plotting_pca <- annot4NachoOrginalcounts_plusquantiles
+annotOrginalcounts_plusquantiles_4_plotting_pca[ , your_main_groups ] <- as.factor( annotOrginalcounts_plusquantiles_4_plotting_pca[ , your_main_groups ] )
+PCA_box_density_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
+                             ExpMat_input_RCCs_Original_Counts_plus_quantiles ,  annotOrginalcounts_plusquantiles_4_plotting_pca , melted_Matrix_nacho_Orig_plusquantiles  , "NACHO_log2_plus_quantiles" , 3, your_main_groups  )
+
+rownames( annotOrginalcounts_plusquantiles_4_plotting_pca) <- annotOrginalcounts_plusquantiles_4_plotting_pca[, myIDcolname]
+annotOrginalcounts_plusquantiles_4_plotting_pca <- annotOrginalcounts_plusquantiles_4_plotting_pca[ colnames(ExpMat_input_RCCs_Original_Counts_plus_quantiles ),]
+
+colors_log2_plus_quantiles <- colors_4_plotDensities(annotOrginalcounts_plusquantiles_4_plotting_pca  , your_main_groups )
+heatmap(ExpMat_input_RCCs_Original_Counts_plus_quantiles , ColSideColors = colors_log2_plus_quantiles )
+
+# quantiles without outlier
+colnames_no_Outlier <- setdiff( colnames(input_RCCs_Original_Counts_Mat) , "20210413_covidnma_01_01_log2.RCC")
+annotOrginalcounts_plusquantiles_4_plotting_pca 
+
+log2_No_Outlier <- input_RCCs_Original_Counts_Mat[,colnames_no_Outlier]
+rownames( annotOrginalcounts_plusquantiles_4_plotting_pca) <- annotOrginalcounts_plusquantiles_4_plotting_pca[, myIDcolname]
+annotOrginalcounts_plusquantiles_4_plotting_pca <- annotOrginalcounts_plusquantiles_4_plotting_pca[ colnames(ExpMat_input_RCCs_Original_Counts_plus_quantiles ),]
 
 
 
-#############
-# GSE example (Including differential expression)
-#############
 
-data_directory <- file.path("/media/rmejia/mountme88/Projects/Maja-covid/Data/NACHO_test", "GSE70970", "Data")
-dir.create(data_directory,recursive = TRUE)
-gse <- getGEO("GSE70970")
-targets <- pData(phenoData(gse[[1]]))
-getGEOSuppFiles(GEO = "GSE70970", baseDir = "/media/rmejia/mountme88/Projects/Maja-covid/Data/NACHO_test")
-untar(
-  tarfile = file.path( "/media/rmejia/mountme88/Projects/Maja-covid/Data/NACHO_test", "GSE70970", "GSE70970_RAW.tar"), 
-  exdir = data_directory
-)
-targets$IDFILE <- list.files(data_directory)                
-GSE70970 <- load_rcc(data_directory, targets, id_colname = "IDFILE")
+dev.off()
 
 
-### GEt the phenotypes
-selected_pheno <- GSE70970[["nacho"]] %>% 
-  select(IDFILE, `age:ch1`, `gender:ch1`, `chemo:ch1`, `disease.event:ch1`) %>% 
-  distinct() %>% 
-  mutate_all(~ na_if(.x, "NA")) %>% 
-  drop_na()
 
-## get the normalised counts
-expr_counts <- GSE70970[["nacho"]] %>% 
-  filter(grepl("Endogenous", CodeClass)) %>% 
-  select(IDFILE, Name, Count_Norm) %>% 
-  pivot_wider(names_from = "Name", values_from = "Count_Norm") %>% 
-  column_to_rownames("IDFILE") %>% 
-  t()
-## Select the phenotypes and counts
-samples_kept <- intersect(selected_pheno[["IDFILE"]], colnames(expr_counts))
-expr_counts <- expr_counts[, samples_kept]
-selected_pheno <- filter(selected_pheno, IDFILE %in% !!samples_kept)
 
-## Design matrix
-design <- model.matrix(~ `disease.event:ch1`, selected_pheno)
 
-# limma
-results <- eBayes(lmFit(expr_counts, design))
 
-topTable(results)
