@@ -131,7 +131,7 @@ removeoutliers <- args$removeoutliers
 # removeoutliers <- "TRUE"
 
 annotation_path <- args$annotation
-# annotation_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.csv"
+# annotation_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.tsv"
 
 mynormalizationmethod <- args$normalizationmethod
 # mynormalizationmethod <- "GEO" # it could be GLM as well
@@ -159,7 +159,7 @@ source( paste0( code_path,"/libraries/","Nacho2Matrix.R" ) )
 ## Body of the program
 #########
 # Manual # vignette( "NACHO-analysis" )
-####
+#########
 input_RCCs <- load_rcc(data_directory = data_directory_path ,
                        ssheet_csv = ssheet_path ,
                        id_colname = myIDcolname  )
@@ -175,21 +175,38 @@ input_RCCs_normalized <- normalise(nacho_object= input_RCCs,
 
 annot <- read.table( file = annotation_path , sep="\t", header=TRUE)
 
-#####
+##################
 ## Extracting the Input data (Counts) stored in the NACHO object
-#####
+##################
 input_RCCs_Original_Counts_Mat <- Nacho_Orig_count_2matrix( input_RCCs)
 
 path2save_orig <- paste0( outputfolder , "/","ExpMat_as_input_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
 write.table( input_RCCs_Original_Counts_Mat, file=path2save_orig,  sep="\t", row.names = TRUE, col.names = TRUE)
 
-#####
+# Saving the Annot for related to The Original matrix
+path2save_annot_from_origExpMat <- paste0( outputfolder , "/","Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
+
+rownames(annot) <- annot[, myIDcolname]
+order4annot <- colnames(input_RCCs_Original_Counts_Mat)  
+write.table(  annot[order4annot,] , file= path2save_annot_from_origExpMat ,  sep="\t", row.names = TRUE, col.names = TRUE, quote=FALSE)
+
+###################
 ## Extracting the normalized Counts from NACHO object using the default Normalization
-#####
+###################
 input_RCCs_ReNorm_Mat <- NachoNorm2matrix( input_RCCs )
 
 path2save_NormNacho <- paste0( outputfolder , "/","ExpMatNorm_NACHO_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--",label,".tsv")
 write.table( input_RCCs_ReNorm_Mat , file= path2save_NormNacho ,  sep="\t", row.names = TRUE, col.names = TRUE)
 
+# Saving the Annot for related to The Norm matrix
+path2save_annot_from_NachoNormExpMat <- paste0( outputfolder , "/","Annot_from_ExpMatNorm_NACHO_from_the_RCCs_in_the_folder",basename(data_directory_path),"--.tsv")
+
+rownames(annot) <- annot[, myIDcolname]
+order4annot_Norm <- colnames( input_RCCs_ReNorm_Mat)  
+write.table(  annot[ order4annot_Norm , ] , file= path2save_annot_from_NachoNormExpMat ,  sep="\t", row.names = TRUE, col.names = TRUE, quote=FALSE)
+
+##################### 
+## Saving the Nacho obj in an RDS
+#####################
 path2save_NachoObj <- paste0( outputfolder , "/","NACHO_Obj_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.RDS")
 saveRDS( input_RCCs , file=path2save_NachoObj) 

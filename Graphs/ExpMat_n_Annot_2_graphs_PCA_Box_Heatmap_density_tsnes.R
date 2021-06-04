@@ -155,6 +155,6 @@ meltedrawdata <- matrix_N_annotdf_2_melteddf( mymatrix , annotdf )
 ############
 ## graphs
 ############
-source(paste0( code_path,"/libraries/","PCA_box_density_tsnes_plots.R") )
-PCA_box_density_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
-                                                  mymatrix ,  annot_4_plotting_pca , meltedrawdata , paste0( label ) , myperplexitynumber , your_main_groups )
+source(paste0( code_path,"/libraries/","PCA_box_density_heatmap_tsnes_plots.R") )
+PCA_box_density_heatmap_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
+                             mymatrix ,  annot_4_plotting_pca , meltedrawdata , paste0( label ) , myperplexitynumber , your_main_groups )

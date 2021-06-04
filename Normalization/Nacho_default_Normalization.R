@@ -166,7 +166,7 @@ input_RCCs_Original_Counts_Mat <- Nacho_Orig_count_2matrix( input_RCCs)
 path2save_orig <- paste0( outputfolder , "/","ExpMat_as_input_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
 write.table( input_RCCs_Original_Counts_Mat, file=path2save_orig,  sep="\t", row.names = TRUE, col.names = TRUE)
 
-# Saving the Annot for related to The Norm matrix
+# Saving the Annot for related to The Original matrix
 path2save_annot_from_origExpMat <- paste0( outputfolder , "/","Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
 
 rownames(annot) <- annot[, myIDcolname]
@@ -181,9 +181,17 @@ input_RCCs_DefaultNorm_Mat <- NachoNorm2matrix( input_RCCs )
 path2save_NormDefaultNacho <- paste0( outputfolder , "/","ExpMatNorm_NACHO_defaults_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.tsv")
 write.table( input_RCCs_DefaultNorm_Mat , file=path2save_NormDefaultNacho ,  sep="\t", row.names = TRUE, col.names = TRUE)
 
+# Saving the Annot for related to The Norm matrix
+path2save_annot_from_NachoDefNormExpMat <- paste0( outputfolder , "/","Annot_from_ExpMatNorm_NACHO_defaults_from_the_RCCs_in_the_folder",basename(data_directory_path),"--.tsv")
+
+rownames(annot) <- annot[, myIDcolname]
+order4annot_DfNorm <- colnames(input_RCCs_DefaultNorm_Mat)  
+write.table(  annot[order4annot_DfNorm, ] , file= path2save_annot_from_NachoDefNormExpMat ,  sep="\t", row.names = TRUE, col.names = TRUE, quote=FALSE)
+
+##################### 
+## Saving the Nacho obj in an RDS
+###################
 path2save_NachoObj <- paste0( outputfolder , "/","NACHO_Obj_from_the_RCCs_in_the_folder--",basename(data_directory_path),"--.RDS")
 saveRDS( input_RCCs , file=path2save_NachoObj) 
 
-###
-# Saving the Annot for related to The Norm matrix
-###
+
