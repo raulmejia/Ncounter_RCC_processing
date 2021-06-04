@@ -8,11 +8,10 @@
 ############
 ## 
 ############
-if (!require("ggplot2")) {
-  BiocManager::install("ggplot2", ask =FALSE)
-  library("ggplot2")
+if (!require("argparse")) {
+  install.packages("argparse", ask =FALSE)
+  library("argparse")
 }
-
 
 ############################## 
 ## Data given by the user
@@ -29,6 +28,7 @@ parser$add_argument("-m", "--inputmatrix", type="character",
                     help="path to the input matrix")
 parser$add_argument("-o", "--outputfolder", type="character", 
                     help="Folder to store the outputs")
+args <- parser$parse_args( )
 
 ########################
 ## Reading the data
@@ -40,6 +40,9 @@ outputfolder <- args$outputfolder
 # outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/Just_ComBat_Equal_variances_assumed_No_Quantiles/"
 dir.create(outputfolder, recursive = TRUE) ; outputfolder <- normalizePath( outputfolder )
 
+##########
+### Body of the program
+##########
 inputmatrix <- read.table( file = inputmatrix_path , sep="\t", header=TRUE, check.names = FALSE)
 
 
