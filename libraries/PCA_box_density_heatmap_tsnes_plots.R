@@ -90,9 +90,9 @@ PCA_box_density_heatmap_tsnes_plots <- function( result_dir, exp_matrix, annotdf
   ### heatmap
   #############
   colors_for_heatmap <- colors_4_plotDensities(annotdf ,  group_4_tsnes )
-  heatmap( as.matrix(exp_matrix), ColSideColors=colors_for_heatmap , margins=c(10,2))
-  
-  
+  heatmap( as.matrix(exp_matrix), ColSideColors=colors_for_heatmap , margins=c(30,2), Colv =FALSE)
+  heatmap( as.matrix(exp_matrix), ColSideColors=colors_for_heatmap , margins=c(1,2), Colv =FALSE)
+  ?heatmap
   ##############
   # Tsne-s
   ##############
