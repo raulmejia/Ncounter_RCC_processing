@@ -1,7 +1,4 @@
-# This script do some plots over your matrix
-# one group of plots is about the distribution of your data ( box and densityplots)
-# the other group of plots are for clustering
-#   tsnes, pcas, ...
+# This script gives a boxplot visualization of selected genes according conditions defined in a annotation file
 # The structure of your matrix should be 
 #          sample1 sample2 ...
 # rowname1  0.42    45
@@ -10,18 +7,14 @@
 # NEG_Prob1 0       12
 # POS_E     2       1
 ## Notes
+##  The annotation file should have a column called "Unique_ID"
 
-# Please note that the columns in the annotation file should no contain numbers otherwise the tsnes complain
 ############################## 
 ## Required libraries
 ##############################
 if (!require("BiocManager")) {
   install.packages("BiocManager", ask =FALSE)
   library("BiocManager")
-}
-if (!require("pheatmap")) {
-  BiocManager::install("pheatmap", ask =FALSE)
-  library("pheatmap")
 }
 if (!require("ggplot2")) {
   BiocManager::install("ggplot2", ask =FALSE)
@@ -31,49 +24,17 @@ if (!require("argparse")) {
   install.packages("argparse", ask =FALSE)
   library("argparse")
 }
-if (!require("ggfortify")) {
-  install.packages("ggfortify", ask =FALSE)
-  library("ggfortify")
-}
-if (!require("limma")) {
-  BiocManager::install("limma", ask =FALSE)
-  library("limma")
-}
-if (!require("smooth")) {
-  install.packages("smooth", ask =FALSE)
-  library("smooth")
-}
 if (!require("RColorBrewer")) {
   install.packages("RColorBrewer", ask =FALSE)
   library("RColorBrewer")
-}
-if (!require("plotrix")) {
-  install.packages("plotrix", ask =FALSE)
-  library("plotrix")
-}
-if (!require("datasets")) {
-  install.packages("datasets", ask =FALSE)
-  library("datasets")
 }
 if (!require("reshape2")) {
   install.packages("reshape2", ask =FALSE)
   library("reshape2")
 }
-if (!require("ggridges")) {
-  install.packages("ggridges", ask =FALSE)
-  library("ggridges")
-}
-if (!require("preprocessCore")) {
-  BiocManager::install("preprocessCore", ask =FALSE)
-  library("preprocessCore")
-}
 if (!require("affy")) {
   BiocManager::install("affy", ask =FALSE)
   library("affy")
-}
-if (!require("Rtsne")) {
-  BiocManager::install("Rtsne", ask =FALSE)
-  library("Rtsne")
 }
 
 ############################## 
@@ -97,8 +58,8 @@ parser$add_argument("-l", "--label", type="character",
                     help="label to your results")
 parser$add_argument("-g", "--maingroups", type="character", 
                     help="the name of your column to correct / make intrabatch normalization")
-parser$add_argument("-p", "--perplexity", type="character", 
-                    help="Perplexity number for Tsnes")
+parser$add_argument("-s", "--selectedgenesfromrownamesofadataframe", type="character", 
+                    help="A data frame that contains the genes that you want to plot in the row names, only the rownames will be used for that tash")
 parser$add_argument("-o", "--outputfolder", type="character", 
                     help="output folder where you want to store your results")
 
@@ -111,23 +72,23 @@ args <- parser$parse_args( )
 ## Reading or preparing the inputs
 #############################
 mymatrix <-read.table( file=args$matrix, stringsAsFactors = FALSE , check.names = FALSE)
-#  mymatrix <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/GSE113342/Tubulointerstitium/Exp_Mat_GSE113342_Tubulus.tsv", stringsAsFactors = FALSE, check.names = FALSE)
+#  mymatrix <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1.tsv", stringsAsFactors = FALSE, check.names = FALSE)
 
 annotdf <-read.table( file=args$annotation, stringsAsFactors = FALSE, header = TRUE )
-# annotdf <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/GSE113342/Annotation_GSE113342_Only_TubuloInterstitium.tsv", stringsAsFactors = FALSE, , header = TRUE)
+# annotdf <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE, , header = TRUE)
 
 code_path <- args$code
 # code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
 
-label <- args$label # label <- "As_downloaded_tubulointerstitium"
+label <- args$label # label <- "First_run"
 your_main_groups <- args$maingroups # your_main_groups <- "Tissue"
 
-myperplexitynumber <- args$perplexity
-mode(myperplexitynumber) <- "numeric"
-# myperplexitynumber <- 3
+DataFrame_with_the_selected_genes_in_the_rownames <-read.table( file=args$selectedgenesfromrownamesofadataframe, stringsAsFactors = FALSE, header = TRUE )
+# DataFrame_with_the_selected_genes_in_the_rownames <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/Majalog2_OAZ1_HPRT1_ABCF1_Contrast...Lung-Kidney.tsv", stringsAsFactors = FALSE, , header = TRUE)
+
 
 outputfolder <- args$outputfolder
-#  outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/MajaNCounter_andGSE113342/As_Downloaded/"
+#  outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/BoxPlot"
 
 dir.create(outputfolder, recursive = TRUE)
 outputfolder <- normalizePath(outputfolder)
@@ -145,16 +106,21 @@ if(all(colnames( mymatrix) ==  annotdf$Unique_ID) != TRUE ){
   break()
 }
 
-## Plotting pcas
-annot_4_plotting_pca <- annotdf
-annot_4_plotting_pca[ , your_main_groups ] <- as.factor( annot_4_plotting_pca[ , your_main_groups ] )
+# Extracting a submatrix that contains only the genes of interest
+Submatrix_with_only_the_genes_of_interest <- mymatrix[ rownames(DataFrame_with_the_selected_genes_in_the_rownames) , ]
 
+## Melting the data
 source( paste0( code_path ,"/libraries/" , "matrix_N_annotdf_2_melteddf.R") )
-meltedrawdata <- matrix_N_annotdf_2_melteddf( mymatrix , annotdf )
+melteddf <- matrix_N_annotdf_2_melteddf( Submatrix_with_only_the_genes_of_interest , annotdf )
 
 ############
-## graphs
+## graphs Boxplots and saving
 ############
-source(paste0( code_path,"/libraries/","PCA_box_density_heatmap_tsnes_plots.R") )
-PCA_box_density_heatmap_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
-                             mymatrix ,  annot_4_plotting_pca , meltedrawdata , paste0( label ) , myperplexitynumber , your_main_groups )
+pdf( file=paste0(outputfolder,"/" , label ,".pdf"),
+     width = 10, height = 7)
+ggplot(melteddf, aes_string(y="value", fill = your_main_groups, x = "variable")) + 
+  geom_boxplot( )+ ggtitle(paste( label ))  # Density plots
+ggplot(melteddf, aes_string(y="value", fill = "variable", x = your_main_groups)) + 
+  geom_boxplot( )+ ggtitle(paste( label ))  # Density plots
+dev.off()
+
