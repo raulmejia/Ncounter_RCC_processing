@@ -78,10 +78,13 @@ args <- parser$parse_args( )
 ## Reading the parameters
 ###########################
 path_to_input_matix <- args$inputmatrix
-#  path_to_input_matix <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/MajaPreprocessed_GlomTubPreprocessed_OAZ1_HPRT1_ABCF1.tsv"
+#  path_to_input_matix <- "/data/.../MajaPreprocessed_GlomTubPreprocessed_OAZ1_HPRT1_ABCF1.tsv"
 
 path_to_annotation <- args$annotation
 # path_to_annotation <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Annot_MajaWhole_GSE113342/Annot_MajaWholw_GSE113342_NumericBatch.tsv"
+
+path_to_annotation <- args$annotation
+# path_to_annotation <- ".tsv"
 
 Colname_with_batches <- args$batchcolumn
 # Colname_with_batches <- "NumBatch"
@@ -97,7 +100,11 @@ if(Batch_used_as_reference == "NULL") {
 } 
 
 path_output  <- args$output
+<<<<<<< HEAD
 # path_output  <-"/media/rmejia/mountme88/Projects/Maja-covid/Results/WholeMaja_GSE113342/HK_then_Combat/MajaPreprocessed_GlomTubPreprocessed_OAZ1_HPRT1_ABCF1_ComBat.tsv"
+=======
+# path_output  <-".tsv"
+>>>>>>> 8407ccb651034891287a1dd14f3f99704b7e3610
 
 #########
 ## Body program

@@ -8,7 +8,7 @@
 input_path=$1
 file_extract_rownames=$2
 output_path=$3
-#file_extract_rownames=/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/GSE115989/RCCs/GSM3204351_20160729_072916_01_122_ABMR.RCC
+#file_extract_rownames=/.../GSM3204351_20160729_072916_01_122_ABMR.RCC
 
 mkdir $input_path/your_matrix
 

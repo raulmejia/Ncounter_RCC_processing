@@ -52,11 +52,11 @@ args <- parser$parse_args( )
 ## Substitute them by hand bc NACHO::visualise should be run in an interactive session
 ###########################
 data_directory_path <- args$datadirectory
-#data_directory_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_log2"
+#data_directory_path <- "/data/.../Original_RCC_log2"
 data_directory_path <- normalizePath( data_directory_path)
 
 ssheet_path <- args$ssheet
-#  ssheet_path <-"/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheetlog2_csv.csv"
+#  ssheet_path <-"/data/.../ssheetlog2_csv.csv"
 
 myIDcolname <- args$idcolname
 # myIDcolname <- "Unique_ID"

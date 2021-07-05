@@ -104,10 +104,10 @@ if (!require("Rtsne")) {
 myhousekeeping_Genes <- ""
 my_normalisation_method <- ""
 myIDcolname <- "Unique_ID"
-code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+code_path <- "/data/.../Ncounter_RCC_processing/"
 code_path <- normalizePath(code_path)
-annot_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot.csv"
-outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/NachoNorm"
+annot_path <- "/data/.../ssheet_annot.csv"
+outputfolder <- "/data/.../NachoNorm"
 your_main_groups  <- "Tissue"
 label <- "NACHO_4HK_GLM"
 
@@ -125,8 +125,8 @@ outputfolder <- normalizePath(outputfolder)
 # Manual
 vignette( "NACHO-analysis" )
 ####
-input_RCCs <- load_rcc(data_directory = "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_files/",
-                       ssheet_csv ="/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_csv.csv",
+input_RCCs <- load_rcc(data_directory = "/data/.../Original_RCC_files/",
+                       ssheet_csv ="/data/.../ssheet_csv.csv",
                        id_colname = "Unique_ID" )
 
 annot <- read.table( file=annot_path , sep="\t", header=TRUE)
@@ -199,13 +199,13 @@ heatmap(Matrix_norm, ColSideColors = colors_from_rainbow )
 # GSE example (Including differential expression)
 #############
 
-data_directory <- file.path("/media/rmejia/mountme88/Projects/Maja-covid/Data/NACHO_test", "GSE70970", "Data")
+data_directory <- file.path("/data/.../NACHO_test", "GSE70970", "Data")
 dir.create(data_directory,recursive = TRUE)
 gse <- getGEO("GSE70970")
 targets <- pData(phenoData(gse[[1]]))
-getGEOSuppFiles(GEO = "GSE70970", baseDir = "/media/rmejia/mountme88/Projects/Maja-covid/Data/NACHO_test")
+getGEOSuppFiles(GEO = "GSE70970", baseDir = "/data/.../NACHO_test")
 untar(
-  tarfile = file.path( "/media/rmejia/mountme88/Projects/Maja-covid/Data/NACHO_test", "GSE70970", "GSE70970_RAW.tar"), 
+  tarfile = file.path( "/data/.../NACHO_test", "GSE70970", "GSE70970_RAW.tar"), 
   exdir = data_directory
 )
 targets$IDFILE <- list.files(data_directory)                

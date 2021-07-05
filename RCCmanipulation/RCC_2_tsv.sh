@@ -4,7 +4,7 @@
 # rows that contain these words CodeClass|Endogenous|Positive|Negative|Housekeeping
 
 input_path=$1
-#input_path=/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/GSE115989/RCCs
+#input_path=/.../GSE115989/RCCs
 
 mkdir $input_path/your_TSVs
 for sample in $input_path/*.RCC;do

@@ -46,18 +46,16 @@ if (!require("tidyverse")) {
 #########################################
 myargs <- commandArgs(trailingOnly = TRUE)
 
-# path_expression_matrix <- "/media/rmejia/mountme88/Projects/DSP/Data/Data_sent_by_DrAO_2020_12_11/Protein/Prunned/ExpMat_from_the_fitting_of--NucleiLog2_QnormBatchSep_combat_Prot_titleclean--n--DSP_protein_annotation_Raul_20201211_odd_deleted_characters_instead_numbers.tsv"
-#bug# path_expression_matrix <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1.tsv"
+# path_expression_matrix <- "" 
 path_expression_matrix <- myargs[1]
 
-# path_annotation_table <-"/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--minimalnames.tsv"
+# path_annotation_table <-""
 path_annotation_table <- myargs[2]
 
-# path_code <- "/media/rmejia/mountme88/code/DSP-Oszwald/"
+# path_code <- ""
 path_code <- myargs[3] 
 
-# Label_for_yor_results <- "Andre_GeoMx_Protein_DEG"
-# Label_for_yor_results <- "Majalog2_OAZ1_HPRT1_ABCF1"
+# Label_for_yor_results <- ""
 Label_for_yor_results <- myargs[4]
 
 # column_of_labels_in_the_annotdf <- "Tissue" # name of the column in your annotation data frame that contains the labels
@@ -75,8 +73,7 @@ myp.value <- myargs[8]
 # number_of_sets_4_the_VennDiagram <- 5
 number_of_sets_4_the_VennDiagram <- myargs[9]
 
-# Folder_to_save_results <- "/media/rmejia/mountme88/Projects/DSP/Results/DEG/Protein/"
-# Folder_to_save_results <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/"
+# Folder_to_save_results <- ""
 Folder_to_save_results <- myargs[10]
 
 

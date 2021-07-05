@@ -111,13 +111,13 @@ args <- parser$parse_args( )
 ## Reading or preparing the inputs
 #############################
 mymatrix <-read.table( file=args$matrix, stringsAsFactors = FALSE , check.names = FALSE)
-#  mymatrix <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/Quantiles/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--quantiles_by_Distribution-spiky_batch_SVA_corrected.tsv", stringsAsFactors = FALSE, check.names = FALSE)
+#  mymatrix <-read.table(file="/data/.../ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--quantiles_by_Distribution-spiky_batch_SVA_corrected.tsv", stringsAsFactors = FALSE, check.names = FALSE)
 
 annotdf <-read.table( file=args$annotation, stringsAsFactors = FALSE )
-# annotdf <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE)
+# annotdf <-read.table(file="/data/.../Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE)
 
 code_path <- args$code
-# code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+# code_path <- "/data/.../code/Ncounter_RCC_processing/"
 
 label <- args$label # label <- "Log2_Batch_spikyDist_SVA"
 your_main_groups <- args$maingroups # your_main_groups <- "Tissue"
@@ -127,7 +127,7 @@ mode(myperplexitynumber) <- "numeric"
 # myperplexitynumber <- 3
 
 outputfolder <- args$outputfolder
-#  outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/Quantiles/"
+#  outputfolder <- "/data/.../Quantiles/"
 
 dir.create(outputfolder, recursive = TRUE)
 outputfolder <- normalizePath(outputfolder)
