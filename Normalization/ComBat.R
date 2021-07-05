@@ -97,7 +97,7 @@ if(Batch_used_as_reference == "NULL") {
 } 
 
 path_output  <- args$output
-# path_output  <-"/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--Direct_Combat.tsv"
+# path_output  <-".tsv"
 
 #########
 ## Body program
