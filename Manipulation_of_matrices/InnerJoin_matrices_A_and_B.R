@@ -56,13 +56,13 @@ args <- parser$parse_args()
 ## The program starts
 #############################
 inputA <-read.table( file=args$infileA, stringsAsFactors = FALSE , check.names=FALSE)
-# inputA <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/toy_for_treshold.txt", stringsAsFactors = FALSE)
+# inputA <-read.table(file="/data/.../toy_for_treshold.txt", stringsAsFactors = FALSE)
 
 inputB <-read.table( file=args$infileB, stringsAsFactors = FALSE , check.names=FALSE)
-# inputB <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/toy_for_treshold_B.txt", stringsAsFactors = FALSE)
+# inputB <-read.table(file="/data/.../toy_for_treshold_B.txt", stringsAsFactors = FALSE)
 
 path2save <- args$outputfile
-#  path2save <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/toys_merged.txt"
+#  path2save <- "/data/.../toys_merged.txt"
 
 common_rows  <- intersect( rownames(inputA ) , rownames(inputB) )
 posA <- which( rownames(inputA ) %in% common_rows )
