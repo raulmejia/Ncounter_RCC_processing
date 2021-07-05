@@ -111,13 +111,13 @@ args <- parser$parse_args( )
 ## Reading or preparing the inputs
 #############################
 mymatrix <-read.table( file=args$matrix, stringsAsFactors = FALSE , check.names = FALSE)
-#  mymatrix <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/GSE113342/Tubulointerstitium/Exp_Mat_GSE113342_Tubulus.tsv", stringsAsFactors = FALSE, check.names = FALSE)
+#  mymatrix <-read.table(file="/data/...Exp_Mat_GSE113342_Tubulus.tsv", stringsAsFactors = FALSE, check.names = FALSE)
 
 annotdf <-read.table( file=args$annotation, stringsAsFactors = FALSE, header = TRUE )
-# annotdf <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/GSE113342/Annotation_GSE113342_Only_TubuloInterstitium.tsv", stringsAsFactors = FALSE, , header = TRUE)
+# annotdf <-read.table(file="/data/.../Annotation_GSE113342_Only_TubuloInterstitium.tsv", stringsAsFactors = FALSE, , header = TRUE)
 
 code_path <- args$code
-# code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+# code_path <- "/data/.../Ncounter_RCC_processing/"
 
 label <- args$label # label <- "As_downloaded_tubulointerstitium"
 your_main_groups <- args$maingroups # your_main_groups <- "Tissue"
@@ -127,7 +127,7 @@ mode(myperplexitynumber) <- "numeric"
 # myperplexitynumber <- 3
 
 outputfolder <- args$outputfolder
-#  outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/MajaNCounter_andGSE113342/As_Downloaded/"
+#  outputfolder <- "/data/.../As_Downloaded/"
 
 dir.create(outputfolder, recursive = TRUE)
 outputfolder <- normalizePath(outputfolder)
