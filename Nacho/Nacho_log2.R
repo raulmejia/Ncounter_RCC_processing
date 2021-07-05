@@ -104,10 +104,10 @@ if (!require("Rtsne")) {
 myhousekeeping_Genes <- ""
 my_NACHO_normalisation_method <- "GLM"
 myIDcolname <- "Unique_ID"
-code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+code_path <- "/data/.../code/Ncounter_RCC_processing/"
 code_path <- normalizePath(code_path)
-annot_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.csv"
-outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm"
+annot_path <- "/data/.../ssheet_annot_log2.csv"
+outputfolder <- "/data/.../NachoNorm"
 your_main_groups  <- "Tissue"
 label <- "Log2_NACHO_4HK_GLM"
 
@@ -124,8 +124,8 @@ outputfolder <- normalizePath(outputfolder)
 
 # Manual # vignette( "NACHO-analysis" )
 ####
-input_RCCs <- load_rcc(data_directory = "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_log2/",
-                       ssheet_csv ="/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheetlog2_csv.csv",
+input_RCCs <- load_rcc(data_directory = "/data/.../Original_RCC_log2/",
+                       ssheet_csv ="/data/.../ssheetlog2_csv.csv",
                        id_colname = "Unique_ID" )
 
 annot <- read.table( file=annot_path , sep="\t", header=TRUE)
