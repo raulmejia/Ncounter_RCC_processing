@@ -35,7 +35,7 @@ args <- parser$parse_args( )
 ## Reading or preparing the inputs
 #############################
 tsv_path <- args$tsv 
-#tsv_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_files/Original_RCC_in_TSV_format/20210413_covidnma_01_12.tsv"
+#tsv_path <- "/.../20210413_covidnma_01_12.tsv"
 mytsv <-read.table( file = tsv_path , stringsAsFactors = FALSE , check.names = FALSE, header = TRUE)
  
 ##############################
