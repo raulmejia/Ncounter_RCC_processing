@@ -80,17 +80,17 @@ args <- parser$parse_args()
 ## The program starts
 #############################
 inmatrix <-read.table( file=args$matrix, stringsAsFactors = FALSE , check.names = FALSE)
-# inmatrix <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE , check.names = FALSE )
+# inmatrix <-read.table(file="/data/.../ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE , check.names = FALSE )
 
 annot <-read.table( file=args$annotation, stringsAsFactors = FALSE , check.names = FALSE , header=TRUE )
-# annot <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE , check.names = FALSE , header=TRUE)
+# annot <-read.table(file="/data/.../Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE , check.names = FALSE , header=TRUE)
 
 path2save <- args$outputfile
-#  path2save <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/Quantiles/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--quantiles_by_Institution_batch.tsv"
+#  path2save <- "/data/...ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--quantiles_by_Institution_batch.tsv"
 dir.create(dirname(path2save), recursive = TRUE)
 
 code_path <- args$code
-# code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+# code_path <- "/data/.../code/Ncounter_RCC_processing/"
 code_path <- normalizePath(code_path)
 
 batches_col <- args$batches
