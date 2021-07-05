@@ -66,15 +66,13 @@ args <- parser$parse_args()
 ## The program starts
 #############################
 inmatrix <-read.table( file=args$matrix, stringsAsFactors = FALSE , check.names = FALSE)
-# inmatrix <-read.table( file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/toys_merged_quantile_norm_by_batch.txt", stringsAsFactors = FALSE)
-# inmatrix <-read.table( file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Merged/Exp_Mat_MK_GSE113342LE_GSE115989RJ_MajaL_GSE89880.txt_quantile_norm_by_batch.txt", stringsAsFactors = FALSE , check.names = FALSE)
+# inmatrix <-read.table( file=".txt", stringsAsFactors = FALSE , check.names = FALSE)
 
 annot <-read.table( file=args$annotation, stringsAsFactors = FALSE , check.names = FALSE )
-# annot <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/toys_merged_annotations.tsv", stringsAsFactors = FALSE)
-# annot <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Data/Merged/Annot_MK_GSE113342_GSE115989_ML_GSE89880.tsv", stringsAsFactors = FALSE , check.names = FALSE )
+# annot <-read.table(file=".tsv", stringsAsFactors = FALSE , check.names = FALSE )
 
 code_path <- args$code
-# code_path <- "/media/rmejia/mountme88/code/Processing_an_RNAexpression_matrix_from_hyb_n_scanning/"
+# code_path <- ""
 code_path <- normalizePath(code_path)
 
 batches_col <- args$batches
@@ -82,9 +80,7 @@ batches_col <- args$batches
 # batches_col <- "Experiment"
 
 path2save <- args$outputfile
-# path2save <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Controls/Ncounter_Platform/Kidney/toys_merged_quantile_norm_by_batch_Batch_correction_through_SVA.txt"
-# path2save <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Merged/Exp_Mat_MK_GSE113342LE_GSE115989RJ_MajaL_GSE89880.txt_quantile_norm_by_batch_then_Batch_correction_through_SVA.txt"
-
+# path2save <-
 
 #############################
 ## The program starts
