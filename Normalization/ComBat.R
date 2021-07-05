@@ -78,10 +78,10 @@ args <- parser$parse_args( )
 ## Reading the parameters
 ###########################
 path_to_input_matix <- args$inputmatrix
-#  path_to_input_matix <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv"
+#  path_to_input_matix <- ".tsv"
 
 path_to_annotation <- args$annotation
-# path_to_annotation <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv"
+# path_to_annotation <- ".tsv"
 
 Colname_with_batches <- args$batchcolumn
 # Colname_with_batches <- "NumBatch"
