@@ -59,13 +59,13 @@ args <- parser$parse_args( )
 ## Reading the parameters
 ###########################
 my_expression_matrix_path <- args$matrix
-# my_expression_matrix_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Subsets_lung_and_kidney/subset_kidney.tsv"
+# my_expression_matrix_path <- "/data/.../subset_kidney.tsv"
 
 my_house_keeping_genes_file_path <- args$housekeepingfile
-# my_house_keeping_genes_file_path <-"/media/rmejia/mountme88/Projects/Maja-covid/Data/HKlists/OAZ1_PGK1_SDHA_MRPS7.tsv"
+# my_house_keeping_genes_file_path <-"/data/.../OAZ1_PGK1_SDHA_MRPS7.tsv"
 
 outfile_path <- args$outputfile
-# outfile_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/subset_kidney_OAZ1_PGK1_SDHA_MRPS7.tsv"
+# outfile_path <- "/data/.../subset_kidney_OAZ1_PGK1_SDHA_MRPS7.tsv"
 
 ###########################
 ## Reading the parameters
