@@ -99,6 +99,8 @@ parser$add_argument("-g", "--maingroups", type="character",
                     help="the name of your column to correct / make intrabatch normalization")
 parser$add_argument("-p", "--perplexity", type="character", 
                     help="Perplexity number for Tsnes")
+parser$add_argument("-s", "--pcapointsize", type="character", 
+                    help="PCA point size")
 parser$add_argument("-o", "--outputfolder", type="character", 
                     help="output folder where you want to store your results")
 
@@ -126,6 +128,10 @@ myperplexitynumber <- args$perplexity
 mode(myperplexitynumber) <- "numeric"
 # myperplexitynumber <- 3
 
+PCA_point_size <- args$pcapointsize
+mode( PCA_point_size ) <- "numeric"
+#PCA_point_size <- 3
+
 outputfolder <- args$outputfolder
 #  outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/MajaNCounter_andGSE113342/As_Downloaded/"
 
@@ -133,6 +139,8 @@ dir.create(outputfolder, recursive = TRUE)
 outputfolder <- normalizePath(outputfolder)
 
 code_path <- normalizePath(code_path)
+
+
 
 ##############################
 ## The program starts
@@ -155,6 +163,6 @@ meltedrawdata <- matrix_N_annotdf_2_melteddf( mymatrix , annotdf )
 ############
 ## graphs
 ############
-source(paste0( code_path,"/libraries/","PCA_box_density_heatmap_tsnes_plots.R") )
+source(paste0( code_path,"/libraries/","PCA-choosing-poing-size_box_density_heatmap_tsnes_plots.R") )
 PCA_box_density_heatmap_tsnes_plots( paste0(  outputfolder,"/PCA_2D" )  ,
-                             mymatrix ,  annot_4_plotting_pca , meltedrawdata , paste0( label ) , myperplexitynumber , your_main_groups )
+                             mymatrix ,  annot_4_plotting_pca , meltedrawdata , paste0( label ) , myperplexitynumber , your_main_groups, PCA_point_size )

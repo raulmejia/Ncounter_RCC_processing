@@ -64,9 +64,9 @@ parser$add_argument("-a", "--annotation", type="character",
 parser$add_argument("-b", "--batchcolumn", type="character", 
                     help="column from your annotation file that contains your batches")
 parser$add_argument("-d", "--differentvariances", type="character", 
-                    help="Are Diffent variances in your biological groups expected?")
+                    help="Are Diffent variances in your biological groups expected? (TRUE / FALSE)")
 parser$add_argument("-r", "--reference", type="character", 
-                    help="Which bacht (in numeric format) will be used as reference")
+                    help="Which bacht (in numeric format) will be used as reference, (or NULL)")
 parser$add_argument("-o", "--output", type="character", 
                     help="Path for your output matrix")
 # get command line options, if help option encountered print help and exit,
@@ -78,10 +78,10 @@ args <- parser$parse_args( )
 ## Reading the parameters
 ###########################
 path_to_input_matix <- args$inputmatrix
-#  path_to_input_matix <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv"
+#  path_to_input_matix <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/MajaPreprocessed_GlomTubPreprocessed_OAZ1_HPRT1_ABCF1.tsv"
 
 path_to_annotation <- args$annotation
-# path_to_annotation <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv"
+# path_to_annotation <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Annot_MajaWhole_GSE113342/Annot_MajaWholw_GSE113342_NumericBatch.tsv"
 
 Colname_with_batches <- args$batchcolumn
 # Colname_with_batches <- "NumBatch"
@@ -97,7 +97,7 @@ if(Batch_used_as_reference == "NULL") {
 } 
 
 path_output  <- args$output
-# path_output  <-"/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--Direct_Combat.tsv"
+# path_output  <-"/media/rmejia/mountme88/Projects/Maja-covid/Results/WholeMaja_GSE113342/HK_then_Combat/MajaPreprocessed_GlomTubPreprocessed_OAZ1_HPRT1_ABCF1_ComBat.tsv"
 
 #########
 ## Body program
@@ -105,8 +105,7 @@ path_output  <- args$output
 inputmatrix <-read.table(file=path_to_input_matix
                        , stringsAsFactors = FALSE, check.names = FALSE)
 
-annot <- read.table(file = path_to_annotation
-                       , stringsAsFactors = FALSE, check.names = FALSE)
+annot <- read.table(file = path_to_annotation, stringsAsFactors = FALSE, check.names = FALSE, header = TRUE,  sep = "\t")
 
 ########
 ### Combat!
@@ -118,4 +117,5 @@ model4combat = model.matrix ( ~1 , data = annot)
 matrix_combated <- ComBat( dat = inputmatrix , batch=batches , mod = model4combat , par.prior = TRUE, prior.plots = FALSE,
 ref.batch = Batch_used_as_reference , mean.only = DifferentBiological_Variances_expected)
 
+dir.create( dirname(path_output) , recursive = TRUE)
 write.table( matrix_combated , file= path_output ,  sep="\t", row.names = TRUE, col.names = TRUE)

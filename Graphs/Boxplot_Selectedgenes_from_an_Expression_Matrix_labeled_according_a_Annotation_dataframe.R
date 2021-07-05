@@ -83,8 +83,8 @@ code_path <- args$code
 label <- args$label # label <- "First_run"
 your_main_groups <- args$maingroups # your_main_groups <- "Tissue"
 
-DataFrame_with_the_selected_genes_in_the_rownames <-read.table( file=args$selectedgenesfromrownamesofadataframe, stringsAsFactors = FALSE, header = TRUE )
-# DataFrame_with_the_selected_genes_in_the_rownames <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/Majalog2_OAZ1_HPRT1_ABCF1_Contrast...Lung-Kidney.tsv", stringsAsFactors = FALSE, , header = TRUE)
+DataFrame_with_the_selected_genes_in_the_rownames <-read.table( file=args$selectedgenesfromrownamesofadataframe, stringsAsFactors = FALSE, header = FALSE )
+#
 
 
 outputfolder <- args$outputfolder
@@ -107,7 +107,7 @@ if(all(colnames( mymatrix) ==  annotdf$Unique_ID) != TRUE ){
 }
 
 # Extracting a submatrix that contains only the genes of interest
-Submatrix_with_only_the_genes_of_interest <- mymatrix[ rownames(DataFrame_with_the_selected_genes_in_the_rownames) , ]
+Submatrix_with_only_the_genes_of_interest <- mymatrix[ DataFrame_with_the_selected_genes_in_the_rownames[,1] , ]
 
 ## Melting the data
 source( paste0( code_path ,"/libraries/" , "matrix_N_annotdf_2_melteddf.R") )
