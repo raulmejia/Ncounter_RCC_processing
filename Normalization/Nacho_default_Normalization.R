@@ -114,23 +114,23 @@ args <- parser$parse_args( )
 ## Reading the parameters
 ###########################
 data_directory_path <- args$datadirectory
-# data_directory_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/Original_RCC_log2"
+# data_directory_path <- "/data/.../Original_RCC_log2"
 data_directory_path <- normalizePath( data_directory_path)
 
 ssheet_path <- args$ssheet
-#  ssheet_path <-"/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheetlog2_csv.csv"
+#  ssheet_path <-"/data/.../ssheetlog2_csv.csv"
 
 myIDcolname <- args$idcolname
 # myIDcolname <- "Unique_ID"
 
 annotation_path <- args$annotation
-# annotation_path <- "/media/rmejia/mountme88/Projects/Maja-covid/Data/ssheet_annot_log2.tsv"
+# annotation_path <- "/data/.../ssheet_annot_log2.tsv"
 
 mynormalizationmethod <- args$normalizationmethod
 # mynormalizationmethod <- "GEO" # it could be GLM as well
 
 code_path <- args$codepath
-# code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+# code_path <- "/.../code/Ncounter_RCC_processing/"
 code_path <- normalizePath( code_path )
 
 your_main_groups  <- args$maingroups
@@ -140,7 +140,7 @@ label <- args$label
 # label <- "Log2_NACHO_4HK_GLM"
 
 outputfolder <- args$outputfolder
-# outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm"
+# outputfolder <- "/.../Results/Preprocessing_through_Log2/NachoNorm"
 dir.create(outputfolder, recursive = TRUE) ; outputfolder <- normalizePath( outputfolder )
 
 #####################################
