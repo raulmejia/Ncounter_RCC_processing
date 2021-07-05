@@ -72,23 +72,23 @@ args <- parser$parse_args( )
 ## Reading or preparing the inputs
 #############################
 mymatrix <-read.table( file=args$matrix, stringsAsFactors = FALSE , check.names = FALSE)
-#  mymatrix <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1.tsv", stringsAsFactors = FALSE, check.names = FALSE)
+#  mymatrix <-read.table(file="/data/.../Majalog2_OAZ1_HPRT1_ABCF1.tsv", stringsAsFactors = FALSE, check.names = FALSE)
 
 annotdf <-read.table( file=args$annotation, stringsAsFactors = FALSE, header = TRUE )
-# annotdf <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Preprocessing_through_Log2/NachoNorm/Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE, , header = TRUE)
+# annotdf <-read.table(file="/data/.../Annot_from_ExpMat_as_input_from_the_RCCs_in_the_folder--Original_RCC_log2--.tsv", stringsAsFactors = FALSE, , header = TRUE)
 
 code_path <- args$code
-# code_path <- "/media/rmejia/mountme88/code/Ncounter_RCC_processing/"
+# code_path <- "/data/.../code/Ncounter_RCC_processing/"
 
 label <- args$label # label <- "First_run"
 your_main_groups <- args$maingroups # your_main_groups <- "Tissue"
 
 DataFrame_with_the_selected_genes_in_the_rownames <-read.table( file=args$selectedgenesfromrownamesofadataframe, stringsAsFactors = FALSE, header = TRUE )
-# DataFrame_with_the_selected_genes_in_the_rownames <-read.table(file="/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/Majalog2_OAZ1_HPRT1_ABCF1_Contrast...Lung-Kidney.tsv", stringsAsFactors = FALSE, , header = TRUE)
+# DataFrame_with_the_selected_genes_in_the_rownames <-read.table(file="/data/.../Majalog2_OAZ1_HPRT1_ABCF1/Majalog2_OAZ1_HPRT1_ABCF1_Contrast...Lung-Kidney.tsv", stringsAsFactors = FALSE, , header = TRUE)
 
 
 outputfolder <- args$outputfolder
-#  outputfolder <- "/media/rmejia/mountme88/Projects/Maja-covid/Results/Normalizations/NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/BoxPlot"
+#  outputfolder <- "/data/...NK_Geo/Majalog2_OAZ1_HPRT1_ABCF1/BoxPlot"
 
 dir.create(outputfolder, recursive = TRUE)
 outputfolder <- normalizePath(outputfolder)
