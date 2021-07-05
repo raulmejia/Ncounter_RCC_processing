@@ -1,4 +1,4 @@
-# This script tries to correct the batch effect throug SVA 
+# This script tries to correct the batch effect throug SVA # Deprecated look at ComBat.R
 # 
 # Annotation file:
 #   One column of your annotation file should be named "Unique_ID" and must match in exaclty the same order with the rownames of the expression matrix
